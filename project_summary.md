@@ -1,6 +1,8 @@
 # Cartograffiti
 
-## Author
+Cartograffiti
+
+## Authors
 - Roger Sodré, [github.com/rsodre](https://github.com/rsodre), [@Roger_S](http://www.twitter.com/Roger_S)
 
 ## Description
@@ -12,7 +14,7 @@ Once drawn, It will stay there, composing a **virtual art gallery** that anyone 
 
 My intention is to deliver a tool and see what people will create with it!
 
-## Prototype
+## Link to Prototype
 [cartograffiti.net](http://cartograffiti.net/)
 
 ## Example Code
@@ -41,7 +43,7 @@ def tile(request, zoom, x, y):
 	path = get_tile_path( request, zoom, x, y )
 	return HttpResponseRedirect( path )
 ```
-## External Libraries
+## Links to External Libraries
 
 - [Google Maps API](http://code.google.com/apis/maps/)
 - [Processing.js](http://processingjs.org/)
