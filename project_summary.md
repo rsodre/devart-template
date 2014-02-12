@@ -1,33 +1,62 @@
-# Project Title
-Insert the name of your project
+# Cartograffiti
 
-## Authors
-- Insert main author name, surname, github account
-- Insert other author(s) name, surname, github account (one per list element)
+## Author
+- Roger Sodré, [github.com/rsodre](https://github.com/rsodre), [@Roger_S](http://www.twitter.com/Roger_S)
 
 ## Description
-Insert a description containing about 100 to 150 words, including your motivation and the meaning behind your idea and execution. The Judges will be keen to know how your idea pushes the boundaries of code and technology. 
+CartoGraffiti is a **collaborative painting** web application, using the Earth surface as it's canvas.
 
-## Link to Prototype
-NOTE: If your project lives online you can add one or more links here. Make sure you have a stable version of your project running before linking it.
+Pick up a location from **Google Maps** and make your art, with **brush**, **stencils** and **stickers**.
 
-[Example Link](http://www.google.com "Example Link")
+Once drawn, It will stay there, composing a **virtual art gallery** that anyone can see and extend.
+
+My intention is to deliver a tool and see what people will create with it!
+
+## Prototype
+[cartograffiti.net](http://cartograffiti.net/)
 
 ## Example Code
-NOTE: Wrap your code blocks or any code citation by using ``` like the example below.
+
+Sample from the client, made with Processing.js (Javascript)
+
 ```
-function test() {
-  console.log("Printing a test");
+function get_cg_tile_url( zoom, x, y, level ) {
+	url = domain_tiles+"/static/tiles/"+zoom+"/"+x+"/"+y+"/tile";
+	for (var i = 1 ; i < level ; i++)
+		url += "_";
+	url += ".png";
+	return url;
 }
 ```
-## Links to External Libraries
- NOTE: You can also use this space to link to external libraries or Github repositories you used on your project.
 
-[Example Link](http://www.google.com "Example Link")
+Sample from the server, made with Django (Python)
+
+```
+def tile(request, zoom, x, y):
+	# Exist?
+	path = get_local_tile_path( request, zoom, x, y, 1 )
+	if ( not os.path.exists( path ) ):
+		return HttpResponseNotFound()
+	# Send static link
+	path = get_tile_path( request, zoom, x, y )
+	return HttpResponseRedirect( path )
+```
+## External Libraries
+
+- [Google Maps API](http://code.google.com/apis/maps/)
+- [Processing.js](http://processingjs.org/)
+- [jQuery](http://jquery.com/)
+- [Django](http://www.djangoproject.com/)
+- [PostgreSQL](http://www.postgresql.org/)
+- [PostGIS](http://postgis.refractions.net/)
+- [GDAL](http://www.kyngchaos.com/software/frameworks#gdal_complete)
+- [PhoneGap](http://phonegap.com/)
 
 ## Images & Videos
-NOTE: For additional images you can either use a relative link to an image on this repo or an absolute link to an externally hosted image.
 
-![Example Image](project_images/cover.jpg?raw=true "Example Image")
+Getting a hang on tiles...
+![wip 1](project_images/wip1.jpg?raw=true "wip 1")
 
-https://www.youtube.com/watch?v=30yGOxJJ2PQ
+Already sticking!
+![wip 2](project_images/wip2.jpg?raw=true "wip 2")
+

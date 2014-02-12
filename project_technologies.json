@@ -1,16 +1,27 @@
 {
     "technologies": {
         "apis": [
-            "insert apis"
+            "Maps"
         ],
         "platforms": [
-            "insert platforms"
+            "HTML5"
         ],
         "toolkits": [
-            "insert toolkits"
+            "Processing.js",
+            "Processing",
+	        "jQuery",
+	        "Django",
+	        "PostgreSQL",
+	        "PostGIS",
+	        "GDAL",
+	        "Phonegao"
         ]
     },
     "themes": [
-        "insert themes"
+        "Collaborative Painting",
+        "Cartography",
+        "Graffiti",
+        "Stickers",
+        "Street Art"
     ]
 }
