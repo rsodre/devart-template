@@ -1,0 +1,124 @@
+
+// Generic point
+class Area_f
+{
+	float x1, y1;
+	float x2, y2;
+	Area_f(float _x1, float _y1, float _x2, float _y2)
+	{
+		x1 = _x1;
+		y1 = _y1;
+		x2 = _x2;
+		y2 = _y2;
+	}
+	void set(float _x1, float _y1, float _x2, float _y2)
+	{
+		x1 = _x1;
+		y1 = _y1;
+		x2 = _x2;
+		y2 = _y2;
+	}
+}
+class Point_f
+{
+	float x, y;
+	Point_f(float _x, float _y)
+	{
+		x = _x;
+		y = _y;
+	}
+	void set(float _x, float _y)
+	{
+		x = _x;
+		y = _y;
+	}
+}
+class Point_i
+{
+	int x, y;
+	Point_i(int _x, int _y)
+	{
+		x = _x;
+		y = _y;
+	}
+	void set(int _x, int _y)
+	{
+		x = _x;
+		y = _y;
+	}
+}
+
+// Distancia enter 2 pontos
+float distance(float x1, float y1, float x2, float y2)
+{
+	return (sqrt(pow(x2-x1,2.0) + pow(y2-y1, 2.0)));
+}
+
+// Angulo entre 2 pontos
+float AngleBetween(float x1, float y1, float x2, float y2)
+{
+	float a = atan2(y2-y1,x2-x1);
+	if (a < 0.0) a += TWO_PI;
+	//if (a >= TWO_PI) a -= TWO_PI;
+	return(a);
+}
+
+// Diferenca real entre 2 angulos
+float AngleDiff(float a1, float a2)
+{
+	float diff = (a2-a1);
+	if (diff < PI) diff += TWO_PI;
+	if (diff > PI) diff -= TWO_PI;
+	return diff;
+}
+
+// meio do caminho entre x1/y1 e x2/y2
+Point_f pointProg(float x1, float y1, float x2, float y2, float prog)
+{
+	float dx = (x2-x1) * prog;
+	float dy = (y2-y1) * prog;
+	return new Point_f( x1+dx, y1+dy );
+}
+Point_f pointSin(float x1, float y1, float x2, float y2, float prog)
+{
+	float dx = (x2-x1) * sin(prog*HALF_PI);
+	float dy = (y2-y1) * sin(prog*HALF_PI);
+	return new Point_f( x1+dx, y1+dy );
+}
+
+
+
+
+/*
+ * Returns the projection of p3 to the segment defined by p1, p2;
+ * @param p1      First point of the segment
+ * @param p2      Second point of the segment
+ * @param p3      Point to which we want to know the distance of the segment defined by p1,p2
+ * from: http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
+ *       http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/DistancePoint.java
+ */
+Point_f projectionOnLine(float x1, float y1, float x2, float y2, float x3, float y3)
+{
+	Point_f p3 = new Point_f(x3, y3);
+	Point_f p1 = new Point_f(x1, y1);  
+	Point_f p2 = new Point_f(x2, y2);
+	
+	float xDelta = p2.x - p1.x;
+	float yDelta = p2.y - p1.y;
+	
+	if ((xDelta == 0) && (yDelta == 0))
+		throw new IllegalArgumentException("p1 and p2 cannot be the same point");
+	
+	float u = ((p3.x - p1.x) * xDelta + (p3.y - p1.y) * yDelta) / (xDelta * xDelta + yDelta * yDelta);
+	
+	final Point_f closestPoint;
+	if (u < 0)
+		closestPoint = p1;
+	else if (u > 1)
+		closestPoint = p2;
+	else
+		closestPoint = new Point_f(p1.x + u * xDelta, p1.y + u * yDelta);
+	
+	return closestPoint;
+}
+

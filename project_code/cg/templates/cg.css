@@ -1,0 +1,524 @@
+<style type="text/css">
+
+/**************************************************
+**	HTML TAGS
+**/
+* {
+    margin:			0;
+}
+html, body {
+	width:			100%;
+	height:			100%;
+{% if page == 'paint' %}
+	overflow:		hidden;		/* disable scroll bars */
+{% endif %}
+}
+body {
+	/*background:		#00FFFF;*/
+	background:			{{ style.colorBack }};
+	color:				{{ style.colorText }};
+	/*font-family:		"Lucida Console",sans-serif;*/
+	/*font-family:		"Verdana",sans-serif;*/
+	font-family:		"{{style.fontFamily}}",Helvetica,sans-serif;
+	font-size:			12px;
+	text-shadow:		{{ style.colorShadow }} 1px 1px 2px;
+	text-align:			center;
+	text-decoration:	none;
+}
+p {
+	margin-top:		11px;
+}
+p.console {
+	font-size:		11px;
+	z-index:		100;
+}
+h1 {
+	font-size:		30px;
+}
+h2 {
+	font-size:		20px;
+}
+h3 {
+	font-size:		16px;
+}
+/* LINKS */
+a {
+	text-decoration:underline;
+	color:			{{ style.colorLink }};
+	position:		relative;
+}
+a:link {
+}
+a:visited {
+	color:			{{ style.colorLinkVisited }};
+}
+a:hover {
+	text-decoration:	underline;
+	color:				{{ style.colorLinkHover }};
+	cursor:				pointer;
+	/*
+	right:				1px;
+	bottom:				1px;
+	*/
+}
+a:active {
+	text-decoration:	underline;
+	color:				{{ style.colorLinkActive }};
+	left:				0px;
+	top:				0px;
+}
+/* MENU LINKS */
+a.menu {
+	text-decoration:none;
+}
+a:hover.menu {
+	text-decoration:none;
+	right:			2px;
+	bottom:			0px;
+}
+a:active.menu {
+	text-decoration:none;
+}
+/* MENU STILL LINKS */
+a:hover.still {
+	right:			0px;
+	bottom:			0px;
+	cursor:			pointer;
+}
+a:active.still {
+	right:			0px;
+	bottom:			0px;
+}
+/* TEXT ELEMENTS */
+text {
+	font-size:		16px;
+	position:		absolute;
+}
+/* BUTTONS */
+button {
+	font-family:		"{{style.fontFamily}}",Helvetica,sans-serif;
+	background-color:	{{style.colorButton}};
+	border:				1px outset;
+	position:			absolute;
+	text-decoration:	none;
+	font-size:			18px;
+	height:				{{style.buttonHeight}}px;
+	top:				0px;
+	left:				0px;
+	padding:			0px 5px 0px 5px;
+	vertical-align:		middle;
+	text-align:			center;
+	z-index:			100;
+}
+button:hover {
+	border-width:		2px;
+}
+button:active {
+	border-style:		inset;
+}
+button:disabled:hover {
+	border-width:		1px;
+}
+button:disabled:active {
+	border-width:		1px;
+}
+/* Elimina hilight de elementos selecionados */
+:focus {
+	outline:none;
+}
+::-moz-focus-inner {
+	border:0;
+}
+
+/**************************************************
+**	INDEX SCREEN
+**/
+.index_table {		/* CLASS */
+}
+
+/**************************************************
+**	DIVs
+**	match object id
+**/
+div {					/* TYPE */
+	-webkit-box-sizing:	border-box;
+	-moz-box-sizing:	border-box;
+	box-sizing:			border-box;
+	text-align:			left;
+	position:			absolute;
+  	margin:				0px;
+	padding:			0px;
+}
+#map_div {				/* ID */
+	width:				100%;
+	height:				100%;
+	left:				0px;
+	top:				0px;
+	z-index:			0;
+}
+#col_left {				/* ID */
+	background-color:	{{style.colorTabBackground}};
+	width:				{{style.leftWidth}}px;
+	height:				100%;
+	top:				0px;
+	left:				0px;
+	z-index:			50;
+	display:			none;	/* display after init */
+}
+#col_middle {			/* ID */
+	background-color:	#000000;
+	width:				100%;
+	height:				100%;
+	top:				0px;
+	left:				0px;
+}
+#col_right{				/* ID */
+	background-color:	{{style.colorTabBackground}};
+	width:				{{style.rightWidth}}px;
+	height:				100%;
+	top:				0px;
+	right:				0px;
+	z-index:			50;
+	display:			none;	/* display after init */
+}
+
+/**************************************************
+**	CANVAS
+**	match object id
+**/
+#processing_stencil {		/* ID */
+	position:	absolute;
+	width:		100%;
+	height:		100%;
+	left:		0px;
+	top:		0px;
+  	margin:		0px;
+	padding:	0px;
+	z-index:	10;
+}
+#processing_canvas {		/* ID */
+	position:	absolute;
+	width:		100%;
+	height:		100%;
+	left:		0px;
+	top:		0px;
+  	margin:		0px; 
+	padding:	0px;
+	z-index:	20;
+}
+.text_progress {			/* CLASS */
+}
+.text_info {				/* CLASS */
+	left:			10px;
+	bottom:			5px;
+	z-index:		100;
+}
+#text_fps {					/* ID */
+	right:			5px;
+	bottom:			15px;
+	z-index:		100;
+}
+#IMG_AVANTE {				/* ID */
+	/*background-image: url("/static/images/avante.png");*/
+	left:			0px;
+	bottom:			10px;
+	z-index:		100;
+}
+
+/**************************************************
+**	LEFT COLUMN
+**/
+#button_save {
+	width:				100%;
+	z-index:			inherit;
+}
+#button_discard {
+	width:				100%;
+	top:				{{style.buttonHeight}}px;
+	z-index:			inherit;
+}
+/******************************/
+/*      TABSS    */
+.tab_tab {			/* CLASS */
+	background-color:	{{style.colorTabBackground}};
+	width:				100%;
+	height:				200px;	/* sera atualizado no resize event */
+	left:				0px;
+	z-index:			52;
+}
+.tab_button {			/* CLASS */
+	width:				100%;
+	z-index:			inherit;
+}
+.tab_content {			/* CLASS */
+	top:				{{style.buttonHeight}}px;
+	width:				100%;
+	height:				{{style.tabContentHeight}}px;
+	z-index:			inherit;
+}
+/******************************/
+/* TAB: BRUSH */
+#tab_brush {			/* ID */
+	top:				{{style.tabBrushY}}px;
+}
+#processing_brush {		/* ID */
+	background-color:	#222222;
+	position:			absolute;
+	width:				100%;
+	height:				{{style.buttonHeight}}px;
+	top:				0px;
+	z-index:			inherit;
+}
+#ui_slider_brush_size {
+	position:			absolute;
+	width:				80%;
+	height:				10;
+	top:				70px;
+	left:				15%;
+	z-index:			inherit;
+}
+/* COLOR PALETTE */
+#div_color_palette {
+	width:				100%;
+	height:				200px;
+	top:				100px;
+	z-index:			inherit;
+	/* scroll bar */
+	margin:			0 auto;
+}
+.button_color_palette {
+	width:				100%;
+	height:				50px;
+	top:				0px;
+	left:				0px;
+	border:				none;
+	z-index:			inherit;
+}
+.color_dropper {
+	top:				0px;
+	left:				0px;
+	border:				none;
+	z-index:			inherit;
+}
+#button_color_00 {			/* ID */
+	background-color:	#333333;		/* ERASER */
+	top:				0px;
+}
+#button_color_01 {			/* ID */
+	background-color:	#000000;
+	top:				50px;
+}
+#button_color_02 {			/* ID */
+	background-color:	#888888;
+	top:				100px;
+}
+#button_color_03 {			/* ID */
+	background-color:	#ffffff;
+	top:				150px;
+}
+#button_color_04 {			/* ID */
+	background-color:	#ff0000;
+	top:				200px;
+}
+#button_color_05 {			/* ID */
+	background-color:	#ffff00;
+	top:				250px;
+}
+#button_color_06 {			/* ID */
+	background-color:	#00ff00;
+	top:				300px;
+}
+#button_color_07 {			/* ID */
+	background-color:	#0000ff;
+	top:				350px;
+}
+/******************************/
+/* TAB: STENCIL */
+#tab_stencil {				/* ID */
+	top:					{{style.tabStencilY}}px;
+}
+.button_stencil_style {		/* CLASS */
+	background-position:	50% 50%;	/* fit image */
+	background-size:		100%;		/* fit image */
+	width:					100%;
+	height:					{{style.leftWidth}}px;
+	top:					0px;
+	border:					none;
+	z-index:				inherit;
+}
+#button_stencil_01 {			/* ID */
+	background-image:		url("/static/images/stencil_01.png");
+	top:					0px;
+}
+#button_stencil_02 {			/* ID */
+	background-image:		url("/static/images/stencil_02.png");
+	top:					100px;
+}
+#button_stencil_03 {			/* ID */
+	background-image:		url("/static/images/stencil_03.png");
+	top:					200px;
+}
+#button_stencil_04 {			/* ID */
+	background-image:		url("/static/images/stencil_04.png");
+	top:					300px;
+}
+#button_stencil_05 {			/* ID */
+	background-image:		url("/static/images/stencil_05.png");
+	top:					400px;
+}
+/******************************/
+/* TAB: STICKER */
+#tab_sticker {				/* ID */
+	top:					{{style.tabStickerY}}px;
+}
+/* http://www.dreamincode.net/forums/topic/67004-scaling-css-backgrounds/ */
+#button_sticker_01 {			/* ID */
+	background-image:		url("/static/images/sticker_01.png");
+	top:					0px;
+}
+#button_sticker_02 {			/* ID */
+	background-image:		url("/static/images/sticker_02.png");
+	top:					100px;
+}
+#button_sticker_03 {			/* ID */
+	background-image:		url("/static/images/sticker_03.png");
+	top:					200px;
+}
+#button_sticker_04 {			/* ID */
+	background-image:		url("/static/images/sticker_04.png");
+	top:					300px;
+}
+#button_sticker_05 {			/* ID */
+	background-image:		url("/static/images/sticker_05.png");
+	top:					400px;
+}
+
+
+
+/******************************/
+/* RIGHT COLUMN */
+#button_about {
+	width:				100%;
+	top:				0px;
+	z-index:			inherit;
+}
+#button_share {
+	width:				100%;
+	top:				50px;
+	z-index:			inherit;
+}
+#button_refresh {
+	width:				100%;
+	top:				100px;
+	z-index:			inherit;
+}
+#button_labels {
+	width:				100%;
+	top:				150px;
+	z-index:			inherit;
+}
+#button_grid {
+	width:				100%;
+	top:				200px;
+	z-index:			inherit;
+}
+#text_zoom_level {
+	width:				100%;
+	height:				100;
+	top:				250px;
+	z-index:			inherit;
+	text-align:			center;
+}
+#button_current_location {
+	width:				100%;
+	top:				350px;
+	z-index:			inherit;
+}
+/* Opacity */
+#ui_slider_opacity {		/* ID */
+	position:			absolute;
+	width:				100%;
+	height:				200px;
+	bottom:				0px;
+	z-index:			inherit;
+}
+#text_opacity {
+	z-index:			inherit;
+	text-align:			center;
+	width:				100%;
+}
+
+
+/******************************/
+/* ROGER MODAL SCREENS */
+.modal_wrapper {		/* CLASS */
+	width:				100%;
+	height:				100%;
+	z-index:			200;
+	top:				0px;
+	left:				0px;
+}
+.modal_fill {		/* CLASS */
+	background-color:	#000000;
+	opacity:			0.7;
+	width:				100%;
+	height:				100%;
+}
+.modal_box {		/* CLASS */
+	background-color:	{{style.colorTabBackground}};
+	width:				500px;
+	height:				150px;
+	top:				50%px;
+	margin:				20% auto;		/* para centralizar dentro do parent (div) */
+	position:			relative;		/* para centralizar dentro do parent (div) */
+}
+.modal_message {		/* CLASS */
+ 	border:				1px solid #aaaaaa;
+	width:				inherit;		/* para o vertical-align funcionar (texto) */
+	height:				100px;
+	top:				0px;
+	left:				0px;
+	font-size:			14px;
+	text-align:			center;
+	vertical-align:		middle;
+	display:			table-cell;		/* para o vertical-align funcionar (texto) */
+	position:			relative;		/* para o vertical-align funcionar (texto) */
+	padding:			10px;
+}
+.modal_buttons {		/* CLASS */
+	width:				100%;
+	height:				{{style.buttonHeight}}px;
+	bottom:				0px;
+	left:				0px;
+}
+/* MODAL: Color Picker */
+#modal_box_picker {		/* ID */
+	height:				400px;
+	margin:				10% auto;		/* para centralizar dentro do parent (div) */
+}
+#modal_message_picker {	/* ID */
+	height:				350px;
+}
+/* MODAL: About */
+#modal_box_about {		/* ID */
+	height:				300px;
+}
+#modal_message_about {	/* ID */
+	height:				250px;
+}
+/* MODAL: Share */
+#modal_box_share {		/* ID */
+	height:				200px;
+}
+#modal_message_share {	/* ID */
+	height:				150px;
+}
+
+
+
+
+/* IE6 stuff */
+* html #container {
+	height: 100%;
+}
+</style>

@@ -1,0 +1,4 @@
+sudo su - postgres
+export PATH=$PATH:/usr/local/pgsql/bin
+psql
+\c cgdb

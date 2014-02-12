@@ -1,0 +1,314 @@
+/* @pjs transparent="true"; */ 
+
+// Painting
+boolean painting = false;
+
+///////////////////////////////
+//
+// CONFIG
+//
+boolean INITIALIZED = false;
+boolean DEBUG = false;
+boolean CHANGED = false;
+String	FRAMERATE = null;
+int		BRUSH_SIZE = 10;
+color	BRUSH_COLOR = color(255,255,255);
+boolean ERASER = false;
+// Cursor
+int			csz = 50;
+PGraphics	cur = createGraphics( csz, csz, P2D );
+PImage		THE_CURSOR = null;
+PGraphics	THE_ERASER = null;
+// view
+boolean bRandomBrushColor = false;
+boolean bDrawRandomGrid = false;
+boolean DRAW_BORDER = false;
+
+//
+// GETTERS
+//
+int		get_WIDTH()						{ return width; }
+int		get_HEIGHT()					{ return height; }
+String	get_FRAMERATE()					{ return FRAMERATE; }
+int		get_MOUSEX()					{ return mouseX; }
+int		get_MOUSEY()					{ return mouseY; }
+boolean	get_CHANGED()					{ return CHANGED; }
+int		get_BRUSH_SIZE()				{ return BRUSH_SIZE; }
+color	get_BRUSH_COLOR()				{ return BRUSH_COLOR; }
+String	get_BRUSH_COLOR_HEX()			{ return "#"+hex(BRUSH_COLOR,6); }
+int		get_BRUSH_COLOR_R()				{ return red(BRUSH_COLOR); }
+int		get_BRUSH_COLOR_G()				{ return green(BRUSH_COLOR); }
+int		get_BRUSH_COLOR_B()				{ return blue(BRUSH_COLOR); }
+boolean	get_ERASER()					{ return ERASER; }
+PImage	get_THE_CURSOR()				{ return THE_CURSOR; }
+//
+// SETTERS
+//
+void	set_INITIALIZED(boolean val)		{ INITIALIZED = val; }
+void	set_DRAW_BORDER(boolean val)		{ DRAW_BORDER = val; }
+void	set_DEBUG(boolean val)				{ DEBUG = val; }
+void	set_BRUSH_SIZE(int val)				{ BRUSH_SIZE = val; refresh_cursor(); }
+void	set_BRUSH_COLOR(int r,int g,int b)	{ BRUSH_COLOR = color(r,g,b); ERASER = false; refresh_cursor(); }
+void	set_ERASER()						{ ERASER = true; refresh_cursor(); }
+
+
+//////////////////////////////////////////////
+//
+// SETUP
+//
+void setup() 
+{
+	resize(window.innerWidth, window.innerHeight);
+	frameRate(30);
+	smooth();
+	refresh_cursor();
+}
+void resize(int w, int h)
+{
+	size( w, h, P2D );
+	reset_canvas();
+}
+
+void refresh_cursor()
+{
+	// make eraser
+	if (ERASER)
+	{
+		THE_ERASER = createGraphics( BRUSH_SIZE, BRUSH_SIZE, P2D );
+		THE_ERASER.background( 0,0,0,0 );
+		THE_ERASER.smooth();
+		THE_ERASER.noStroke();
+		THE_ERASER.fill( 255,255,255,255 );
+		THE_ERASER.ellipse( BRUSH_SIZE/2, BRUSH_SIZE/2, BRUSH_SIZE, BRUSH_SIZE );
+		THE_ERASER.loadPixels();
+	}
+
+	// make cursor
+	cur.background(0,0,0,0);
+	cur.smooth();
+	if ( ERASER )
+	{
+		cur.strokeWeight(2);
+		cur.stroke( 255, 255, 255 );
+		cur.noFill();
+	}
+	else
+	{
+		cur.noStroke();
+		cur.fill( BRUSH_COLOR );
+	}
+	cur.ellipse( csz/2, csz/2, BRUSH_SIZE, BRUSH_SIZE );
+	// copy to cirsor
+	THE_CURSOR = createImage( csz, csz, ARGB );
+	THE_CURSOR.copy( cur, 0, 0, csz,  csz, 0, 0, csz, csz);
+	
+	// use as cursor, oh yeah!
+	cursor( THE_CURSOR, csz/2, csz/2 );
+}
+
+
+//
+// NEW CANVAS
+void reset_canvas()
+{
+	CHANGED = false;
+	
+	// clear canvas + alpha
+	background(0,0,0,0);
+	
+	// Color tiles
+	if (bDrawRandomGrid)
+	{
+		noStroke();
+		for (var id in tileObjects)
+		{
+			var o = tileObjects[id];
+			fill( random(0,255), random(0,255), random(0,255) );
+			rect( o.sx, o.sy, o.w, o.h );
+			//alert("sx="+o.sx+" sy="+o.sy+" w="+o.w+" h="+o.h);
+		}
+	}
+
+	// device border
+	// NEVER IN PRODUCTION!!!
+	if (DRAW_BORDER && DEBUG)
+	{
+		strokeWeight(3);
+		noFill();
+		stroke(255,0,0);
+		rect(0,0,width,height);
+	}
+	
+	__print_console("CANVAS RESET!");
+}
+void apply_sticker()
+{
+	PImage sticker = pro_stencil.get_RASTER();
+	image( sticker );
+}
+void prepare_for_upload()
+{
+	if (isStenciling || isSticking)
+	{
+		// grab mask pixels
+		PImage stencil = pro_stencil.get_RASTER();
+		//
+		// Stamp Sticker!
+		if (isSticking)
+		{
+			image(stencil);
+		}
+		//
+		// Remove Stencil
+		else if (isStenciling && isPainting)
+		{
+			stencil.loadPixels();
+			// grab screen pixels
+			loadPixels();
+			// erase screen with mask alphs
+			for (int i = 0; i < stencil.pixels.length; i++)
+			{
+				int as = alpha(stencil.pixels[i]);
+				if (as > 0)
+				{
+					int ad = alpha(pixels[i]);
+					if (ad > 0)
+						pixels[i] = ( pixels[i] & 0xffffff ) | ((255-as) << 24);
+						//pixels[i] = color( red(pixels[i]), green(pixels[i]), blue(pixels[i]), (255-as) );
+				}
+			}
+			// update screen pixels
+			updatePixels();
+		}
+		// trash mask
+		stencil = null;
+	}
+	// grab pixels for should_upload_tile()
+	loadPixels();
+}
+//
+// loadPixels(); should be called before
+boolean should_upload_tile( x, y, w, h )
+{
+	//return true;
+	int step = 1;	// Check EVERY pixel
+	int step = 2;	// Checkboard
+	for ( int xx = 0 ; xx < w ; xx+=2 )
+	{
+		for ( int yy = 0 ; yy < h ; yy+=2 )
+		{
+			int i = ( (y+yy) * width) + xx + x;
+			if ( alpha(pixels[i]) )
+				return true;
+		}
+	}
+	return false;
+}
+
+
+//////////////////////////////////////////////
+//
+// DRAW
+//
+void draw() 
+{
+	if (!INITIALIZED)
+		return;
+	
+	// clear canvas + alpha
+	//background(0,0,0,0);
+
+	// Javascript DRAW
+	cg_draw();
+
+	// update vars
+	FRAMERATE = nf(frameRate,2,1);
+}
+
+void mousePressed()
+{
+	cg_brush_start();
+}
+void mouseDragged()
+{
+	cg_brush_move();
+}
+void mouseReleased()
+{
+	//cg_brush_move();
+	cg_brush_end();
+}
+
+
+//////////////////////////////////////////////////////
+//
+// CG BRUSH
+//
+PVector curveControl, curveStart, curveEnd;
+void cg_brush_start()
+{
+	noFill();
+	if (ERASER)
+		stroke( 255,255,255 );
+	else if (bRandomBrushColor)
+		stroke( random(0,255), random(0,255), random(0,255) );
+	else
+		stroke( BRUSH_COLOR );
+	strokeWeight( BRUSH_SIZE );
+	curveStart = new PVector( mouseX, mouseY );
+	curveEnd = new PVector( mouseX, mouseY );
+	// draw point
+	cg_brush_move();
+}
+void cg_brush_move()
+{
+	// end = mouse
+	curveEnd = new PVector( mouseX, mouseY );
+	// curve!
+	if (ERASER)
+		do_erase();
+	else
+		line( curveStart.x, curveStart.y, curveEnd.x, curveEnd.y );
+	// save for next start
+	curveStart.set( curveEnd );
+	CHANGED = true;
+}
+void cg_brush_end()
+{
+}
+
+//
+// Erase an area with THE_ERASER
+void do_erase()
+{
+	int startX = mouseX - BRUSH_SIZE/2;
+	int startY = mouseY - BRUSH_SIZE/2;
+	loadPixels();
+	for (int x = 0 ; x < BRUSH_SIZE ; x++ )
+	{
+		for (int y = 0 ; y < BRUSH_SIZE ; y++ )
+		{
+			// get eraser alpha
+			int aa = (255 - alpha(THE_ERASER.pixels[y*BRUSH_SIZE+x])) / 255.0;
+			// erase!
+			if (aa < 1.0)
+			{
+				int i = ((startY+y) * width) + (startX+x);
+				pixels[i] = color( red(pixels[i]), green(pixels[i]), blue(pixels[i]), alpha(pixels[i])*aa );
+			}
+		}
+	}
+	updatePixels();
+}
+
+
+// Angulo entre 2 pontos
+float AngleBetween(float x1, float y1, float x2, float y2)
+{
+	float a = atan2(y2-y1,x2-x1);
+	if (a < 0.0) a += TWO_PI;
+	//if (a >= TWO_PI) a -= TWO_PI;
+	return(a);
+}
+
+

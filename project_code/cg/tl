@@ -1,0 +1,1 @@
+tail -f /home/rsodre/logs/user/error_django_cg.log

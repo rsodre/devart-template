@@ -1,0 +1,20 @@
+/* @pjs transparent="true"; */ 
+
+void setup()
+{
+	size(100,50);
+	frameRate(15);
+	smooth();
+}
+void draw()
+{
+	if (pro)
+	{
+		PImage cur = pro.get_THE_CURSOR();
+		if (cur)
+		{
+			background(0,0,0,0);
+			image( cur, (width-cur.width)/2, (height-cur.height)/2 );
+		}
+	}
+}

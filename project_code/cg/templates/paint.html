@@ -1,0 +1,593 @@
+{% extends "view.html" %}
+
+<!-- TITLE -->
+{% block title %}CartoGraffiti{% endblock %}
+
+
+<!-- SCRIPT BLOCK START -->
+<script type="text/javascript">
+{% block script %}
+//
+// AJAX
+$(document).ready( function () {
+
+{% if debug %}
+	// Debig tabs
+	$('div').hover( function () {
+		//__print_console($(this).attr('id'));
+	} );
+{% endif %}
+
+	//
+	// ESC KEY to al MODALS
+	$(document).keydown(function(e){
+		if (e.keyCode == 27) { 
+			$('#modal_about').hide();
+			$('#modal_share').hide();
+			$('#modal_confirm_save').hide();
+			$('#modal_color_picker').hide();
+		   return false;
+		}
+	});
+
+	////////////////////////////////
+	//
+	// RIGHT COMUMN
+	//
+	// Modal ABOUT
+	$('#button_about_ok').click(function (e) {
+		$('#modal_about').hide();
+	});
+	$('#button_about').click(function (e) {
+		$('#modal_about').show();
+	});
+	//
+	// Modal SHARE
+	$('#button_share').click(function (e) {
+		var url = get_sharing_link();
+		$('#share_anchor').attr( 'href', url );
+		$('#share_anchor').html( url );
+		$('#modal_share').show();
+		// TODO::REMOVER ISTO
+		__button_disable( $('#button_share_facebook') );
+	});
+	$('#button_share_cancel').click(function (e) {
+		$('#modal_share').hide();
+	});
+	$('#button_share_link').click(function (e) {
+		__sharing();
+		var url = get_sharing_link();
+		window.open(url,'_blank');
+		$('#modal_share').hide();
+	});
+	$('#button_share_twitter').click(function (e) {
+		__sharing();
+		// https://dev.twitter.com/docs/tweet-button
+		// https://dev.twitter.com/docs/tweet-button/faq#dimensions
+		var msg = "Check out this cartographical graffiti...";
+		var url = "https://twitter.com/share?via=cartograffiti&text="+escape(msg)+"&url="+escape(get_sharing_link());
+		window.open(url,'_blank','width=550, height=450');
+		$('#modal_share').hide();
+	});
+	$('#button_share_facebook').click(function (e) {
+		__sharing();
+		// http://developers.facebook.com/docs/guides/web/
+		$('#modal_share').hide();
+	});
+	//
+	// Modal COLOR PICKER
+	$('#button_color_picker_cancel').click(function (e) {
+		$('#modal_color_picker').hide();
+	});
+	$('#button_confirm_cancel').click(function (e) {
+		$('#modal_confirm_save').hide();
+	});
+	//
+	// REFRESH
+	$('#button_refresh').click(function (e) {
+		var url = "/set_home/"+current_zoom+"/"+current_center.lat()+"/"+current_center.lng()+"/";
+		$.post(url, {}, function (resp) {
+			if (resp == "ok")
+			{
+				//window.location.href=window.location.href;
+				location.reload(true);
+			}
+		} );
+		// post a form dows not refresh very well...
+		//$('#redirect_zoom').attr('value',current_zoom);
+		//$('#redirect_lat').attr('value',current_center.lat());
+		//$('#redirect_lng').attr('value',current_center.lng());
+		//$('#redirect_form').attr('action',location.href);
+		//$('#redirect_form').submit();
+	});
+	//
+	// Show Tiles Grid
+	$('#button_labels').click(function (e) {
+		if ( current_map_type == google.maps.MapTypeId.HYBRID)
+			switch_labels( google.maps.MapTypeId.SATELLITE );
+		else
+			switch_labels( google.maps.MapTypeId.HYBRID );
+	});
+	//
+	// Show Tiles Grid
+	$('#button_grid').click(function (e) {
+		switch_grid( !draw_grid );
+		//pro.set_DRAW_BORDER( draw_grid );
+	});
+{% if mobile %}
+	//
+	// Go To Current location
+	$('#button_current_location').click(function (e) {
+		var gpsOptions = {
+			enableHighAccuracy:	true,
+			maximumAge:			1000,
+			timeout:			5000,
+		};
+		// Phonegap:: call gps
+		navigator.geolocation.getCurrentPosition(function (pos) {
+			map.setCenter( new google.maps.LatLng( pos.coords.latitude, pos.coords.longitude ) );
+			map.setZoom( 15 );
+		}, function (error) {
+			__gps_error(error);
+		}, gpsOptions);
+	});
+{% endif %}
+	
+	
+	
+	////////////////////////////////
+	//
+	// LEFT COLUMN
+	//
+	// DRAW
+	$('#button_draw').click(function (e) {
+		goto_painter();
+	});
+	//
+	// SAVE
+	$('#button_save').click(function (e) {
+		upload_tiles();
+		goto_maps();
+	});
+	//
+	// CANCEL / DISCARD
+	$('#button_discard').click(function (e) {
+		goto_maps();
+	});
+	//
+	// UPLOAD
+	$('#button_send').click(function (e) {
+		upload_tiles();
+	});
+	//
+	// BUSH TAB
+	$('#button_tab_brush').click(function (e) {
+		goto_brush();
+	});
+	// Colors
+	$('#button_color_00').click(function (e) {
+		__pick_color();
+	});
+	$('#button_color_01').click(function (e) {
+		__pick_color( $('#button_color_01'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	$('#button_color_02').click(function (e) {
+		__pick_color( $('#button_color_02'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	$('#button_color_03').click(function (e) {
+		__pick_color( $('#button_color_03'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	$('#button_color_04').click(function (e) {
+		__pick_color( $('#button_color_04'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	$('#button_color_05').click(function (e) {
+		__pick_color( $('#button_color_05'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	$('#button_color_06').click(function (e) {
+		__pick_color( $('#button_color_06'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	$('#button_color_07').click(function (e) {
+		__pick_color( $('#button_color_07'), e.pageX-this.offsetLeft, e.pageY-this.offsetTop );
+	});
+	//
+	// STENCIL
+	$('#button_tab_stencil').click(function (e) {
+		goto_stencil();
+	});
+	$('#button_stencil_01').click(function (e) {
+		__pick_stencil( $('#button_stencil_01'), true );
+	});
+	$('#button_stencil_02').click(function (e) {
+		__pick_stencil( $('#button_stencil_02'), true );
+	});
+	$('#button_stencil_03').click(function (e) {
+		__pick_stencil( $('#button_stencil_03'), true );
+	});
+	$('#button_stencil_04').click(function (e) {
+		__pick_stencil( $('#button_stencil_04'), true );
+	});
+	$('#button_stencil_05').click(function (e) {
+		__pick_stencil( $('#button_stencil_05'), true );
+	});
+	//
+	// STICKER
+	$('#button_tab_sticker').click(function (e) {
+		goto_sticker();
+	});
+	$('#button_sticker_01').click(function (e) {
+		__pick_stencil( $('#button_sticker_01'), false );
+	});
+	$('#button_sticker_02').click(function (e) {
+		__pick_stencil( $('#button_sticker_02'), false );
+	});
+	$('#button_sticker_03').click(function (e) {
+		__pick_stencil( $('#button_sticker_03'), false );
+	});
+	$('#button_sticker_04').click(function (e) {
+		__pick_stencil( $('#button_sticker_04'), false );
+	});
+	$('#button_sticker_05').click(function (e) {
+		__pick_stencil( $('#button_sticker_05'), false );
+	});
+	//
+	// UI
+	//
+	// CG Opacity
+	$(function() {
+		$("#ui_slider_opacity").slider({
+			orientation: "vertical",
+			range:	"min",
+			min:	0,
+			max:	100,
+			value:	100,
+			slide:	function( event, ui ) {
+				cg_opacity = (ui.value / 100);
+				$('div[id="cgdiv"]').fadeTo(0, cg_opacity);
+				if (isPainting)
+					$('#processing_canvas').fadeTo(0, cg_opacity);
+				if (isStenciling || isSticking)
+					$('#processing_stencil').fadeTo(0, cg_opacity);
+				//__print_console("slider="+v);
+			}
+		});
+	});
+	//
+	// BRUSH SIZE
+	$(function() {
+		$("#ui_slider_brush_size").slider({
+			range:	"min",
+			min:	2,
+			max:	{{style.maxBrushSize}},
+			value:	5,
+			slide:	function( event, ui ) {
+				pro.set_BRUSH_SIZE( ui.value );
+			}
+		});
+	});
+})
+
+
+//
+// MODAL CONFIRM
+function __set_brush_color( hx )
+{
+	if ( hx == undefined )
+	{
+		pro.set_ERASER();
+	}
+	else
+	{
+		// Parse color
+		//var rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);	// for "#ffff"
+		var rgb = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hx);		// for "ffff"
+		var r = parseInt(rgb[1],16);
+		var g = parseInt(rgb[2],16);
+		var b = parseInt(rgb[3],16);
+		pro.set_BRUSH_COLOR( r, g, b );
+	}
+
+	if (!isPainting)
+		goto_painter();
+}
+
+//
+// MODAL COLOR PICKER
+function __pick_color( butt, x, y )
+{
+	__confirm_save( true, function () {
+		//
+		// ERAASER
+		if (butt == undefined)
+		{
+			__set_brush_color();
+			return;
+		}
+
+		// Grab color from button
+		var bc = butt.css('background-color');
+		var hx = "000000";
+		// try: ffffff
+		if (bc.length == 6)
+			hx = bc;
+		// try: #ffffff
+		else if (bc[0] == '#')
+			hx = bc.substr(1,6);
+		else
+		{
+			// try: rgb(num, num, num)
+			var p0 = bc.indexOf("rgb(");
+			var p1 = bc.indexOf(")");
+			if (p0 >= 0 && p1 >= 0)
+			{
+				var parts = bc.substr(p0+4,p1-p0-4).split(',');
+				if (parts.length == 3)
+					hx = toHex(eval(parts[0])) + toHex(eval(parts[1])) + toHex(eval(parts[2]));
+			}
+		}
+		
+		//
+		// Set current BRUSH
+		__set_brush_color( hx );
+
+		//
+		// Pick new Color??
+		var PIKK = ( x != undefined && y != undefined );
+		if ( PIKK )
+			PIKK = ( x <= ({{style.leftWidth}}*0.5) );
+		if (PIKK)
+		{
+			// Set button actions
+			$('#button_color_picker_apply').click(function (e) {
+				var new_hx = pro_picker.get_COLOR_HEX();
+				//butt.html( "#"+new_hx );
+				butt.css('background-color', "#"+new_hx );
+				__set_brush_color( new_hx );
+				// dispose!
+				$('#modal_color_picker').hide();
+				$('#button_color_picker_apply').unbind();	// remove this callback
+			});
+			// Set picker color
+			pro_picker.set_COLOR_HEX( hx );
+			// Show Picker dialog!
+			$('#modal_color_picker').show();
+		}
+	});
+}
+// Convert number to Hex string like FF
+function toHex(n) {
+	n = parseInt(n,10);
+	if (isNaN(n)) return "00";
+	n = Math.max(0,Math.min(n,255));
+	return "0123456789ABCDEF".charAt((n-n%16)/16)
+		+ "0123456789ABCDEF".charAt(n%16);
+}
+
+//
+// Pickins Stencil / Sticker
+function __pick_stencil( butt, asMask )
+{
+	__confirm_save( false, function () {
+		var filename = get_css_background_image( butt );
+		load_stencil( filename, 0.5, asMask );
+	});
+}
+
+//
+// MODAL CONFIRM - Ask to save drawing, if changed
+// painter = confirming from a painter action?
+function __confirm_save( painter, doitfunc )
+{
+	var msg = "";
+	if ( !painter && isPainting && pro.get_CHANGED() )
+		msg = "Apply current painting?";
+	else if ( isSticking )
+		msg = "Apply current sticker?";
+	if ( msg )
+	{
+		$('#button_confirm_discard').click(function (e) {
+			$('#modal_confirm_save').hide();
+			doitfunc();
+		});
+		$('#button_confirm_save').click(function (e) {
+			upload_tiles();
+			$('#modal_confirm_save').hide();
+			doitfunc();
+		});
+		// Show dialog!
+		$('#modal_message_confirm').html(msg);
+		$('#modal_confirm_save').show();
+	}
+	// Do it!
+	else
+	{
+		doitfunc();
+	}
+}
+
+function __sharing () {
+	var url = "/sharing/"+current_zoom+"/"+current_center.lat()+"/"+current_center.lng()+"/";
+	//alert(url);
+	$.post(url, {}, function (resp) {
+		//alert(resp);
+		return false;
+	} );
+}
+
+{% endblock %}
+</script>
+<!-- SCRIPT BLOCK END -->
+
+
+
+<!-- BODY BLOCK START -->
+{% block body %}
+
+<!-- MIDDLE COLUMN -->
+<div id="col_middle">
+	<canvas id="processing_canvas" data-processing-sources="/static/processing/cg.pjs /static/processing/cg_stencil_class.pjs"></canvas>
+	<canvas id="processing_stencil" data-processing-sources="/static/processing/cg_stencil.pjs /static/processing/cg_stencil_class.pjs"></canvas>
+	<div id="map_div"></div>
+
+	<!--<button id="button_draw" style="left:400px;">DRAW</button>-->
+	<!--<button id="button_send" style="left:750px;">send</button>-->
+
+	<text class="text_info" style="bottom:105px;" id="text_bounds_nw"></text>
+	<text class="text_info" style="bottom:80px;" id="text_bounds_se"></text>
+	<text class="text_info" style="bottom:55px;" id="text_center"></text>
+	<text class="text_info" style="bottom:30px;" id="text_mouse"></text>
+	<text class="text_info" style="bottom:5px;" id="text_console">console</text>
+	<text id="text_fps"></text>
+</div>
+
+<!-- LEFT COLUMN -->
+<div id="col_left">
+
+	<button id="button_save">APPLY</button>
+	<button id="button_discard">DISCARD</button>
+	
+	<!-- Brush Tab -->
+	<div id="tab_brush" class="tab_tab">
+		<button id="button_tab_brush" class="tab_button">brush</button>
+		<div id="tab_content_brush" class="tab_content">
+			<canvas id="processing_brush" data-processing-sources="/static/processing/brush_preview.pjs"></canvas>
+			<div id="ui_slider_brush_size"></div>
+			<div id="div_color_palette">
+				<div class="button_color_palette" id="button_color_00"><img src="/static/images/color_eraser.png" class="color_eraser"></div>
+				<div class="button_color_palette" id="button_color_01"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+				<div class="button_color_palette" id="button_color_02"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+				<div class="button_color_palette" id="button_color_03"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+				<div class="button_color_palette" id="button_color_04"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+				<div class="button_color_palette" id="button_color_05"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+				<div class="button_color_palette" id="button_color_06"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+				<div class="button_color_palette" id="button_color_07"><img src="/static/images/color_dropper.png" class="color_dropper"></div>
+			</div>
+		</div>
+	</div>
+	<!-- Brush Stencil -->
+	<div id="tab_stencil" class="tab_tab">
+		<button id="button_tab_stencil" class="tab_button">stencils</button>
+		<div id="tab_content_stencil" class="tab_content">
+			<div id="button_stencil_01" class="button_stencil_style"></div>
+			<div id="button_stencil_02" class="button_stencil_style"></div>
+			<div id="button_stencil_03" class="button_stencil_style"></div>
+			<div id="button_stencil_04" class="button_stencil_style"></div>
+			<div id="button_stencil_05" class="button_stencil_style"></div>
+		</div>
+	</div>
+	<!-- Brush Tab -->
+	<div id="tab_sticker" class="tab_tab">
+		<button id="button_tab_sticker" class="tab_button">stickers</button>
+		<div id="tab_content_sticker" class="tab_content">
+			<div id="button_sticker_01" class="button_stencil_style"></div>
+			<div id="button_sticker_02" class="button_stencil_style"></div>
+			<div id="button_sticker_03" class="button_stencil_style"></div>
+			<div id="button_sticker_04" class="button_stencil_style"></div>
+			<div id="button_sticker_05" class="button_stencil_style"></div>
+		</div>
+	</div>
+</div>
+
+<!-- RIGHT COLUMN -->
+<div id="col_right">
+	<button id="button_about">about</button>
+	<button id="button_share">share</button>
+	<button id="button_refresh">refresh map</button>
+	<button id="button_labels">labels</button>
+	<button id="button_grid">grid</button>
+	<text id="text_zoom_level">zoom</text>
+	{% if mobile %}
+	<button id="button_current_location">current location</button>
+	{% endif %}
+	<div id="ui_slider_opacity">
+		<text id="text_opacity">Opacity</text>
+	</div>
+</div>
+
+
+
+
+
+
+
+<!-- REDIRECT FORM -->
+<div id="redirect_div" style="display:none;">
+	<form id="redirect_form" action="" method="post">
+	{% csrf_token %}
+	<input id="redirect_zoom" type="hidden" name="zoom" value="">
+	<input id="redirect_lat" type="lat" name="lat" value="">
+	<input id="redirect_lng" type="lng" name="lng" value="">
+	</form>
+</div>
+
+<!-- MODAL CONFIRM -->
+<div class="modal_wrapper" id="modal_confirm_save" style="display:none;">
+	<div class="modal_fill"></div>
+	<div class="modal_box">
+		<div class="modal_message" id="modal_message_confirm">MESSAGE</div>
+		<div class="modal_buttons">
+			<button id="button_confirm_cancel" style="width:33.3%;left:0px;">cancel</button>
+			<button id="button_confirm_discard" style="width:33.3%;left:33.3%;">discard</button>
+			<button id="button_confirm_save" style="width:33.3%;left:66.6%;">apply</button>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL COLOR PICKER -->
+<div class="modal_wrapper" id="modal_color_picker" style="display:none;">
+	<div class="modal_fill"></div>
+	<div class="modal_box" id="modal_box_picker">
+		<div class="modal_message_picker" id="modal_message_picker">
+			<canvas id="processing_picker" data-processing-sources="/static/processing/color_picker.pjs"></canvas>
+		</div>
+		<div class="modal_buttons">
+			<button id="button_color_picker_cancel" style="width:50%;left:0px;">cancel</button>
+			<button id="button_color_picker_apply" style="width:50%;left:50%;">apply</button>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL ABOUT -->
+<div class="modal_wrapper" id="modal_about" style="display:none;">
+	<div class="modal_fill"></div>
+	<div class="modal_box" id="modal_box_about">
+		<div class="modal_message" id="modal_message_about">
+			<h1>CartoGraffiti</h1>
+			<p>By Roger Sodré
+			<br><a href="http://www.studioavante.com/">Studio Avante</a>
+			<br>2011
+			<p><a href="http://www.cartograffiti.net/">http://www.cartograffiti.net/</a>
+			<p>Follow <a href="http://www.twitter.com/cartograffiti">@cartograffiti</a> on Twitter
+			<p><iframe id="facebook_like" src="about:blank" scrolling="no" frameborder="1" style="border:none; width:100px; height:20px"></iframe>
+		</div>
+		<div class="modal_buttons">
+			<button id="button_about_ok" style="width:100%;left:0px;">ok</button>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL SHARE -->
+<div class="modal_wrapper" id="modal_share" style="display:none;">
+	<div class="modal_fill"></div>
+	<div class="modal_box" id="modal_box_share">
+		<div class="modal_message" id="modal_message_share">
+			<p>Shares will be visible to all CartoGraffiti community when you tap on the link or buttonn below. Tap CANCEL if you do not want to share.
+			<p>Link for this share:
+			<p><h3><a id="share_anchor" href="about:blank" target="_blank" onclick="__sharing();$('#modal_share').hide();">url</a></h3>
+		</div>
+		<div class="modal_buttons">
+			<button id="button_share_cancel" style="width:25%;left:0px;">cancel</button>
+			<button id="button_share_link" style="width:25%;left:25%;">link</button>
+			<button id="button_share_twitter" style="width:25%;left:50%;">twitter</button>
+			<button id="button_share_facebook" style="width:25%;left:75%;">facebook</button>
+		</div>
+	</div>
+</div>
+
+
+
+
+{% endblock %}
+<!-- BODY BLOCK END -->
+
+
+

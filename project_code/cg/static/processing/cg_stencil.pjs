@@ -1,0 +1,75 @@
+/* @pjs transparent="true"; */ 
+
+StencilClass floatStencil = null;
+boolean DRAW_BORDER = false;
+boolean EDITING = false;
+
+void set_EDITING( boolean val )		{ EDITING = val; };
+
+void setup()
+{
+	resize(window.innerWidth, window.innerHeight);
+	frameRate(30);
+	smooth();
+}
+void resize(int w, int h)
+{
+	size( w, h );
+}
+void load( filename, maxRadius )
+{
+	floatStencil = new StencilClass( filename, maxRadius );
+	EDITING = true;
+}
+void reset()
+{
+	floatStencil = null;
+}
+PImage get_RASTER()
+{
+	EDITING = false;
+	draw();
+	PImage raster = get();
+	return raster;
+}
+void draw()
+{
+	if (floatStencil)
+	{
+		background(0,0,0,0);
+		floatStencil.draw( EDITING );
+	}
+
+	// device border
+	if (DRAW_BORDER)
+	{
+		noFill();
+		stroke(20,255,0);
+		strokeWeight(3);
+		rect(0,0,width,height);
+	}
+}
+
+
+//
+// INTERACTION
+void mouseMoved()
+{
+	if (floatStencil) floatStencil.mouseMoved();
+}
+void mousePressed()
+{
+	if (floatStencil) floatStencil.mousePressed();
+}
+void mouseDragged()
+{
+	if (floatStencil) floatStencil.mouseDragged();
+}
+void mouseReleased()
+{
+	if (floatStencil) floatStencil.mouseReleased();
+}
+
+
+
+

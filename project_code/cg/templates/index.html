@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+
+<head>
+<title>{% block title %}CartoGraffiti{% endblock %}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="pragma" content="nocache">
+<meta name="KEYWORDS" content="cartograffiti, cartografite, roger sodre, studio avante, google maps, game, grafiti, stencil, sticker, art, winner">
+<meta name="Author" content="Roger Sodré">
+<meta name="Description" content="CartoGraffiti">
+<!--<link rel="shortcut icon" href="/static/images/cg.ico">-->
+
+{% if mobile %}
+<script type="text/javascript" src="/static/js/jquery-1.6.2.min.js"></script>
+{% else %}
+<script type="text/javascript" src="/static/js/jquery-1.6.2.js"></script>
+{% endif %}
+<script type="text/javascript" src="/static/js/jquery.json-2.2.js"></script>
+<script type="text/javascript" src="/static/js/libroger.js"></script>
+
+<!-- CSS -->
+{% include "cg.css" %}
+
+
+<!-- JAVASCRIPT -->
+<script type="text/javascript">
+function initialize()
+{
+}
+</script>
+
+<!-- GOOGLE ANALYTICS -->
+{% if not localhost %}
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	 ga('create', 'UA-11863609-8', 'cartograffiti.net');
+	 ga('send', 'pageview');
+</script>
+{% endif %}
+<!-- GOOGLE ANALYTICS -->
+
+</head>
+
+<body onload='initialize();'>
+
+<!-- FACEBOOK LIKE -->
+<div id="fb-root"></div>
+<script>
+	(function(d, s, id) {
+		 var js, fjs = d.getElementsByTagName(s)[0];
+		 if (d.getElementById(id)) return;
+		 js = d.createElement(s); js.id = id;
+		 js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1&appId=117978514967909";
+		 fjs.parentNode.insertBefore(js, fjs);
+	 }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- BODY BLOCK START -->
+{% block body %}
+<!-- WRAPPER TABLE -->
+<table width="100%" height="100%">
+<tr><td align=center valign=center>
+
+<!-- CONTENT TABLE -->
+<table width=600 cellspacing=8 cellpadding=0 border=0 class="index_table">
+
+<!-- TTLE -->
+<tr><td align=center valign=center colspan="100%">
+	<h1>CartoGraffiti</h1>
+</tr></td>
+<tr><td colspan="100%"><hr></tr></td>	<!-- SPACER -->
+
+<!-- VIEW -->
+<tr><td colspan="100%">
+	<h2>About</h2>
+	<p>CartoGraffiti is a collaborative painting web application, using the Earth surface as it's canvas.
+	<br>Pick up a location from Google Maps and make your art, with brush tools, stencils and stickers.
+	<br>Once drawn, It will stay there, composing a virtual art gallery that anyone can see and extend.
+	<br>CartoGraffiti is aimed for the iPad, but will be available online during BETA stage.
+</tr></td>
+<tr><td colspan="100%"><p><hr></tr></td>	<!-- SPACER -->
+
+
+
+<!-- RULES -->
+<tr><td colspan="100%">
+	<h2>Rules</h2>
+	<p>There are no rules.
+	<br>This is an open collaborative canvas.
+	<br>A permanent autonomous zone.
+	<br>Once something is published, it will stay there. Forever.
+	<br>Try not to cover entire areas and cover the maps.
+	<br>Use cartography as an ally. Play with it.
+	<br>There's no erasing. Like a wall, the only way to erase it to paint over.
+	<br>There will be no editing. So please be nice.
+	<br>Each zoom level is a new layer, a new canvas. If you zoom in or out, you'll see a completely different drawing.
+</tr></td>
+<tr><td colspan="100%"><p><hr></tr></td>	<!-- SPACER -->
+
+
+
+<!-- DISCLAIMER -->
+<tr><td colspan="100%">
+	<h2>Paint</h2>
+	<p>CartoGrafiti is in ALPHA stage.
+	<br>It means that it is still in development and not finished yet.
+	<br>Anyone is welcome to join the tests, but keep in mind that it may be unstable.
+	<br>Drawings made during this stage <b>may be deleted</b> before the official release. Or not. So please don't get too attached to them.
+	{% if globals.online and not globals.viewonly %}
+		<p><h2><a href="/paint/" style="color:#00ff00;">The painting system is ONLINE!</a></h2>
+	{% else %}
+		<p><h2 style="color:#ff0000;">The painting system is currently under maintenance.</h2>
+	{% endif %}
+	{% if globals.online %}
+		<p><h2><a href="/view/" style="color:#ffff00;">Browse CartoGraffiti</a></h2>
+	{% else %}
+		<p><h2>The viewing system is currently under maintenance.</h2>
+	{% endif %}
+</tr></td>
+<tr><td colspan="100%"><p><hr></tr></td>	<!-- SPACER -->
+
+
+
+<!-- SUBMIT -->
+<tr><td colspan="100%">
+	<h2>Submit your stencils and stickers</h2>
+	<p>CartoGraffiti needs stencils and stickers for it's online public database.
+	<br>If you want to contribute, send your art to <a href="mailto:dropbox@cartograffiti.net">dropbox@cartograffiti.net</a>
+	<br>The best ones received will be incorporated in the public library and credited here.
+	<p>Stencils specification:
+		<ul>
+			<li>File type: PNG with transparency
+			<li>Max file size: 500x500
+			<li>Leave some border or you may paint outside the stencil
+		</ul>
+	<p>Stickers specification:
+		<ul>
+			<li>File type: PNG or JPEG
+			<li>Max file size: 250x250
+		</ul>
+	<p>For the time being, you can use only stencils and stickers from the public library, but in the future you will be able to use your own.
+</tr></td>
+<tr><td colspan="100%"><p><hr></tr></td>	<!-- SPACER -->
+
+
+
+<!-- CREDITS -->
+<tr><td colspan="100%">
+	<h2>Credits</h2>
+	<p>CartoGrafiti is being developed by Roger Sodré.
+	<br>Contacts: 
+		<a href="mailto:roger@studioavante.com">Email</a> /
+		<a href="http://www.twitter.com/Roger_S">Twitter</a> /
+		<a href="http://www.flickr.com/photos/sigilo/">Flickr</a> /
+		<a href="http://www.studioavante.com/">Software</a>
+	<p>Powered by 
+		<a href="http://code.google.com/apis/maps/">Google Maps API</a>,
+		<a href="http://processingjs.org/">Processing.js</a>,
+		<a href="http://jquery.com/">jQuery</a>,
+		<a href="http://www.djangoproject.com/">Django</a>,
+		<a href="http://www.postgresql.org/">PostgreSQL</a>,
+		<a href="http://postgis.refractions.net/">PostGIS</a> and
+		<a href="http://phonegap.com/">PhoneGap</a> (iOS)
+	<p>Stickers and Stencils gently provided by
+		<a href="http://colante.com/">Vinil Colante</a>,
+		<a href="http://www.flickr.com/photos/fixxa/">Fixxa</a>,
+</tr></td>
+<tr><td colspan="100%"><p><hr></tr></td>	<!-- SPACER -->
+
+
+
+<!-- DONATE -->
+<tr><td width="400">
+	<h2>Contribute</h2>
+	<p>CartoGraffiti needs a strong web server for heavy image data transfers.
+	<br>If you enjoy this application please donate to keep it running forever.
+	<br>You'll make me very happy by doing that! :))
+	<p>Follow <a href="http://www.twitter.com/cartograffiti">@cartograffiti</a> on Twitter
+	<!-- FACEBOOK LIKE -->
+	<p><div class="fb-like" data-href="http://www.cartograffiti.net/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+</td><td valign=middle>
+	<!-- PAYPAL -->
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="hosted_button_id" value="XWVK6SRV59YHQ">
+	<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+	<img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+	</form>
+	<!-- PAYPAL -->
+</tr></td>
+<tr><td colspan="100%"><p><hr></tr></td>	<!-- SPACER -->
+
+<!-- SOCIAL -->
+<tr><td colspan="100%">
+</tr></td>
+
+<!-- JABA -->
+<!--
+<tr><td colspan="100%" align=center>
+	<a class="still" href="http://www.studioavante.com/"><img border=0 src="/static/images/avante_100.png"></a>
+</tr></td>
+-->
+
+
+
+<!-- CONTENT TABLE ENDS -->
+</table>
+
+<!-- WRAPPER TABLE ENDS -->
+</tr></td></table>
+</body>
+{% endblock %}
+<!-- BODY BLOCK END -->
+</body>
+</html>
+
+
+
+

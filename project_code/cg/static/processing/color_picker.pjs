@@ -1,0 +1,150 @@
+/* @pjs transparent="true"; */ 
+
+// Current Color
+int VAL_H = 0;    // 0..HUEMAX
+int VAL_S = 0;    // 0..HUEMAX
+int VAL_B = 0;    // 0..HUEMAX
+color CURRENT_COLOR;
+
+int HUEMAX;
+int hue_width;
+
+PGraphics grad;
+PGraphics huecol;
+boolean fresh = true;
+int gap = 20;
+int preview_height = 50;
+
+
+String	get_COLOR_HEX()		{ return hex(CURRENT_COLOR,6); }
+//void set_COLOR_HEX( int r, int g, int b )
+void set_COLOR_HEX( String hx )		// hx like "FFFFFF"
+{
+	int hsb = color.toHSB( unhex(hx) );
+	VAL_H = hsb[0];
+	VAL_S = hsb[1];
+	VAL_B = hsb[2];
+	update_color();
+	fresh = true;
+}
+
+
+void update_color() {
+	colorMode(HSB, HUEMAX);
+	CURRENT_COLOR = color( VAL_H, VAL_S, VAL_B );
+}
+
+void setup() {
+	size(450, 350, P2D);
+	frameRate(15);
+	smooth();
+	
+	HUEMAX = height - preview_height;
+	hue_width = (width - HUEMAX);
+	
+	VAL_H = 0;
+	VAL_S = HUEMAX;
+	VAL_B = HUEMAX;
+	update_color();
+	
+	grad = createGraphics(HUEMAX, HUEMAX, P2D);
+	updateGradient();
+	
+	huecol = createGraphics(hue_width, HUEMAX, P2D);
+	huecol.beginDraw();
+	huecol.strokeWeight(1);
+	huecol.beginShape( LINES );
+	for (int y = 0 ; y < huecol.height ; y++)
+	{
+		huecol.stroke( color( y, HUEMAX, HUEMAX ) );
+		huecol.vertex( 0, y );
+		huecol.vertex( huecol.width, y);
+	}
+	huecol.endShape();
+	huecol.endDraw();
+}
+
+void updateGradient() {
+	grad.beginDraw();
+	grad.loadPixels();
+	for (int x = 0 ; x < HUEMAX ; x++)
+		for (int y = 0 ; y < HUEMAX ; y++)
+			grad.pixels[y*HUEMAX+x] = color( VAL_H, x, (HUEMAX-y) );
+	grad.updatePixels();
+	grad.endDraw();
+}
+
+// Este aqui nao funciona em JavaScript :(
+void updateGradient_BEST() {
+	grad.beginDraw();
+	grad.noFill();
+	grad.strokeWeight(1);
+	grad.beginShape( LINES );
+	for (int y = 0 ; y < HUEMAX ; y++)
+	{
+		grad.stroke( color( VAL_H, 0, (HUEMAX-y) ) );
+		grad.vertex( 0, y );
+		grad.stroke( color( VAL_H, HUEMAX, (HUEMAX-y) ) );
+		grad.vertex( HUEMAX, y);
+	}
+	grad.endShape();
+	grad.endDraw();
+}
+
+void draw() {
+	if (!fresh)
+		return;
+	fresh = false;
+	
+	background(0);
+
+	// gradient
+	int x = 0;
+	image(grad,x,0);
+	// gradient point
+	noFill();
+	stroke(0,0,HUEMAX);
+	strokeWeight(2);
+	ellipse( VAL_S, HUEMAX-VAL_B, 12, 12 );
+	
+	// hue
+	x += HUEMAX + gap;
+	image(huecol,x,0);
+	stroke(0,0,HUEMAX);
+	strokeWeight(3);
+	line( x+1, VAL_H, x+hue_width, VAL_H );
+	
+	// preview
+	noStroke();
+	fill( CURRENT_COLOR );
+	rect(0,HUEMAX,width,preview_height);
+}
+
+void mousePressed()
+{
+	pick_color();
+}
+void mouseDragged()
+{
+	pick_color();
+}
+
+void pick_color()
+{
+	if (mouseY < HUEMAX)
+	{
+		if (mouseX < HUEMAX)
+		{
+			VAL_S = mouseX;
+			VAL_B = HUEMAX - mouseY;
+		}
+		else if (mouseX > HUEMAX+gap)
+		{
+			VAL_H = mouseY;
+			updateGradient();
+		}
+		update_color();
+		fresh = true;
+	}
+}
+

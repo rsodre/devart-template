@@ -1,0 +1,179 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXFileReference section */
+		DB0BCBF613D62F7C0088E9E1 /* cg.pjs */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = cg.pjs; sourceTree = "<group>"; };
+		DB0BCBF713D62F7C0088E9E1 /* jquery-1.6.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jquery-1.6.2.js"; path = "static/js/jquery-1.6.2.js"; sourceTree = "<group>"; };
+		DB0BCBF813D62F7C0088E9E1 /* jquery-1.6.2.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jquery-1.6.2.min.js"; path = "static/js/jquery-1.6.2.min.js"; sourceTree = "<group>"; };
+		DB0BCBF913D62F7C0088E9E1 /* jquery.json-2.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jquery.json-2.2.js"; path = "static/js/jquery.json-2.2.js"; sourceTree = "<group>"; };
+		DB0BCBFA13D62F7C0088E9E1 /* jquery.json-2.2.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jquery.json-2.2.min.js"; path = "static/js/jquery.json-2.2.min.js"; sourceTree = "<group>"; };
+		DB0BCBFB13D62F7C0088E9E1 /* libroger.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = libroger.js; path = static/js/libroger.js; sourceTree = "<group>"; };
+		DB0BCBFD13D62F7C0088E9E1 /* processing-1.2.3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "processing-1.2.3.min.js"; path = "static/js/processing-1.2.3.min.js"; sourceTree = "<group>"; };
+		DB0BCC3613D637100088E9E1 /* phonegap.0.9.6.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = phonegap.0.9.6.js; path = static/js/phonegap.0.9.6.js; sourceTree = "<group>"; };
+		DB0BCC3713D637100088E9E1 /* phonegap.0.9.6.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = phonegap.0.9.6.min.js; path = static/js/phonegap.0.9.6.min.js; sourceTree = "<group>"; };
+		DB0BCC6C13D648E70088E9E1 /* cg.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = cg.css; path = templates/cg.css; sourceTree = "<group>"; };
+		DB0BCF5313D679A70088E9E1 /* cg.js */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; name = cg.js; path = templates/cg.js; sourceTree = "<group>"; };
+		DB18CCB713DF9B9E009FEB3F /* cg_stencil.pjs */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = cg_stencil.pjs; sourceTree = "<group>"; };
+		DB18CD7A13DFB2B7009FEB3F /* cg_lib.pjs */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = cg_lib.pjs; sourceTree = "<group>"; };
+		DB18CD9A13DFB41E009FEB3F /* cg_stencil_class.pjs */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = cg_stencil_class.pjs; sourceTree = "<group>"; };
+		DB23490D13EA50F000154B91 /* color_picker.pjs */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = color_picker.pjs; sourceTree = "<group>"; };
+		DB38E8C11224209B00C5B9E0 /* settings_webfaction.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = settings_webfaction.py; path = cg/settings_webfaction.py; sourceTree = "<group>"; };
+		DB705E7613DE46A200088B34 /* view.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = view.html; path = templates/view.html; sourceTree = "<group>"; };
+		DB80C3B613E1250100E86A6F /* brush_preview.pjs */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = brush_preview.pjs; sourceTree = "<group>"; };
+		DB8BE2CE11E1109A0057D5E1 /* settings.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = settings.py; path = cg/settings.py; sourceTree = "<group>"; };
+		DB8BE2CF11E1109A0057D5E1 /* urls.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = urls.py; path = cg/urls.py; sourceTree = "<group>"; };
+		DB8BE2D911E12A080057D5E1 /* models.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = models.py; sourceTree = "<group>"; };
+		DB8BE2DB11E12A080057D5E1 /* views.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = views.py; sourceTree = "<group>"; };
+		DB8BE2FD11E152070057D5E1 /* admin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = admin.py; sourceTree = "<group>"; };
+		DB8BE45811E19E5A0057D5E1 /* urls.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = urls.py; sourceTree = "<group>"; };
+		DBB43FA813EF51770021CA39 /* processing-1.2.3-CG.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "processing-1.2.3-CG.js"; path = "static/js/processing-1.2.3-CG.js"; sourceTree = "<group>"; };
+		DBB4402E13EF8A990021CA39 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = templates/index.html; sourceTree = "<group>"; };
+		DBB4405B13EF8ECC0021CA39 /* offline.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = offline.html; path = templates/offline.html; sourceTree = "<group>"; };
+		DBB440AB13EF95890021CA39 /* thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = thanks.html; path = templates/thanks.html; sourceTree = "<group>"; };
+		DBB6C747126F58E2002CCC98 /* paint.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = paint.html; path = templates/paint.html; sourceTree = "<group>"; };
+		DBB7938E13EDFA850086409C /* jquery-ui-1.8.14.custom.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "jquery-ui-1.8.14.custom.css"; path = "static/js/jquery-ui-1.8.14.custom.css"; sourceTree = "<group>"; };
+		DBB7938F13EDFA850086409C /* jquery-ui-1.8.14.custom.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jquery-ui-1.8.14.custom.min.js"; path = "static/js/jquery-ui-1.8.14.custom.min.js"; sourceTree = "<group>"; };
+		DBB7955613EE22E10086409C /* plugin.scrollbar-CG.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "plugin.scrollbar-CG.js"; path = "static/js/plugin.scrollbar-CG.js"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		DB8BE2B911E1107A0057D5E1 = {
+			isa = PBXGroup;
+			children = (
+				DBA9950818A5DE990002AB3A /* cg */,
+				DB8BE2D111E129F60057D5E1 /* app */,
+				DB8BE3D911E1936C0057D5E1 /* templates */,
+				DBB4405C13EF8EF40021CA39 /* processing */,
+				DB95422111E7C355002BD2DD /* static */,
+			);
+			sourceTree = "<group>";
+		};
+		DB8BE2D111E129F60057D5E1 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				DB8BE2FD11E152070057D5E1 /* admin.py */,
+				DB8BE45811E19E5A0057D5E1 /* urls.py */,
+				DB8BE2D911E12A080057D5E1 /* models.py */,
+				DB8BE2DB11E12A080057D5E1 /* views.py */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		DB8BE3D911E1936C0057D5E1 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				DBB4402E13EF8A990021CA39 /* index.html */,
+				DBB4405B13EF8ECC0021CA39 /* offline.html */,
+				DBB440AB13EF95890021CA39 /* thanks.html */,
+				DB705E7613DE46A200088B34 /* view.html */,
+				DBB6C747126F58E2002CCC98 /* paint.html */,
+				DB0BCC6C13D648E70088E9E1 /* cg.css */,
+				DB0BCF5313D679A70088E9E1 /* cg.js */,
+			);
+			name = templates;
+			sourceTree = "<group>";
+		};
+		DB95422111E7C355002BD2DD /* static */ = {
+			isa = PBXGroup;
+			children = (
+				DB0BCBF713D62F7C0088E9E1 /* jquery-1.6.2.js */,
+				DB0BCBF813D62F7C0088E9E1 /* jquery-1.6.2.min.js */,
+				DB0BCBF913D62F7C0088E9E1 /* jquery.json-2.2.js */,
+				DB0BCBFA13D62F7C0088E9E1 /* jquery.json-2.2.min.js */,
+				DB0BCBFB13D62F7C0088E9E1 /* libroger.js */,
+				DBB43FA813EF51770021CA39 /* processing-1.2.3-CG.js */,
+				DB0BCBFD13D62F7C0088E9E1 /* processing-1.2.3.min.js */,
+				DB0BCC3613D637100088E9E1 /* phonegap.0.9.6.js */,
+				DB0BCC3713D637100088E9E1 /* phonegap.0.9.6.min.js */,
+				DBB7938F13EDFA850086409C /* jquery-ui-1.8.14.custom.min.js */,
+				DBB7938E13EDFA850086409C /* jquery-ui-1.8.14.custom.css */,
+				DBB7955613EE22E10086409C /* plugin.scrollbar-CG.js */,
+			);
+			name = static;
+			sourceTree = "<group>";
+		};
+		DBA9950818A5DE990002AB3A /* cg */ = {
+			isa = PBXGroup;
+			children = (
+				DB8BE2CF11E1109A0057D5E1 /* urls.py */,
+				DB8BE2CE11E1109A0057D5E1 /* settings.py */,
+				DB38E8C11224209B00C5B9E0 /* settings_webfaction.py */,
+			);
+			name = cg;
+			sourceTree = "<group>";
+		};
+		DBB4405C13EF8EF40021CA39 /* processing */ = {
+			isa = PBXGroup;
+			children = (
+				DB0BCBF613D62F7C0088E9E1 /* cg.pjs */,
+				DB18CCB713DF9B9E009FEB3F /* cg_stencil.pjs */,
+				DB18CD9A13DFB41E009FEB3F /* cg_stencil_class.pjs */,
+				DB18CD7A13DFB2B7009FEB3F /* cg_lib.pjs */,
+				DB80C3B613E1250100E86A6F /* brush_preview.pjs */,
+				DB23490D13EA50F000154B91 /* color_picker.pjs */,
+			);
+			name = processing;
+			path = static/processing;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		DB8BE2BB11E1107A0057D5E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = DB8BE2BE11E1107A0057D5E1 /* Build configuration list for PBXProject "cg" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = DB8BE2B911E1107A0057D5E1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		DB8BE2BC11E1107A0057D5E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		DB8BE2BD11E1107A0057D5E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB8BE2BE11E1107A0057D5E1 /* Build configuration list for PBXProject "cg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB8BE2BC11E1107A0057D5E1 /* Debug */,
+				DB8BE2BD11E1107A0057D5E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DB8BE2BB11E1107A0057D5E1 /* Project object */;
+}
