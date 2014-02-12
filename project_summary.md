@@ -18,9 +18,9 @@ My intention is to deliver a tool and see what people will create with it!
 
 Info: [cartograffiti.net](http://cartograffiti.net/)
 
-Paint: [cartograffiti.net](http://paint.cartograffiti.net/)
+Paint: [paint.cartograffiti.net](http://paint.cartograffiti.net/)
 
-View: [cartograffiti.net](http://view.cartograffiti.net/)
+View: [view.cartograffiti.net](http://view.cartograffiti.net/)
 
 ## Example Code
 
