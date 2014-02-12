@@ -15,7 +15,12 @@ Once drawn, It will stay there, composing a **virtual art gallery** that anyone 
 My intention is to deliver a tool and see what people will create with it!
 
 ## Link to Prototype
-[cartograffiti.net](http://cartograffiti.net/)
+
+Info: [cartograffiti.net](http://cartograffiti.net/)
+
+Paint: [cartograffiti.net](http://paint.cartograffiti.net/)
+
+View: [cartograffiti.net](http://view.cartograffiti.net/)
 
 ## Example Code
 
