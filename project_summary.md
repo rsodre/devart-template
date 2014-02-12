@@ -1,9 +1,9 @@
-# Cartograffiti
+# Project Title
 
 Cartograffiti
 
 ## Authors
-- Roger Sodré, [github.com/rsodre](https://github.com/rsodre), [@Roger_S](http://www.twitter.com/Roger_S)
+- Roger Sodrï¿½, [github.com/rsodre](https://github.com/rsodre), [@Roger_S](http://www.twitter.com/Roger_S)
 
 ## Description
 CartoGraffiti is a **collaborative painting** web application, using the Earth surface as it's canvas.
